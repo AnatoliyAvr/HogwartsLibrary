@@ -8,9 +8,13 @@ import kotlinx.serialization.ExperimentalSerializationApi
 @ExperimentalSerializationApi
 class StudentsRepositoryImpl : StudentsRepository {
 
-  override suspend fun fetchStudents(): List<StudentModel> {
-    return RetrofitFactory.instance.charactersService.getAllCharacters()
-      .filter { it.house.isEmpty() }
-      .map { it.mapToModel() }
+  override suspend fun fetchStudents(): List<StudentModel>? {
+    return try {
+      RetrofitFactory.instance.charactersService.getAllCharacters()
+        .filter { it.house.isNotEmpty() }
+        .map { it.mapToModel() }
+    } catch (e: Exception) {
+      null
+    }
   }
 }

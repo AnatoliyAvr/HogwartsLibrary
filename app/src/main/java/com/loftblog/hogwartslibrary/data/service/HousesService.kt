@@ -6,6 +6,13 @@ import retrofit2.http.Path
 
 interface HousesService {
 
-  @GET("./house/{house}")
-  suspend fun getHouse(@Path("house") house: String): List<HouseRemote>
+  companion object {
+    val griffindor = "Gryffindor"
+    val ravenclaw = "Ravenclaw"
+    val slytherin = "Slytherin"
+    val hufflepuff = "Hufflepuff"
+  }
+
+  @GET("characters/house/{house}")
+  suspend fun getHouseDetails(@Path("house") house: String): List<HouseRemote>
 }

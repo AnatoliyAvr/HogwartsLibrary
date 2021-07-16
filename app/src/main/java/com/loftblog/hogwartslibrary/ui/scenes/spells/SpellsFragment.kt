@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.loftblog.hogwartslibrary.databinding.FragmentSpellsBinding
 import com.loftblog.hogwartslibrary.ui.scenes.spells.adapters.SpellAdapter
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class SpellsFragment : Fragment() {
 
   private var _binding: FragmentSpellsBinding? = null
@@ -25,12 +27,10 @@ class SpellsFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    viewModel =
-      ViewModelProvider(this).get(SpellsViewModel::class.java)
+    viewModel = ViewModelProvider(this).get(SpellsViewModel::class.java)
 
     _binding = FragmentSpellsBinding.inflate(inflater, container, false)
-    val root: View = binding.root
-    return root
+    return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,11 +38,13 @@ class SpellsFragment : Fragment() {
 
     configureRecycler()
     configureDataDisplay()
+    setupLoading()
 
     binding.apply {
       btnSpellsCharm.setOnClickListener {
         btnSpellsCharm.isSelected = !btnSpellsCharm.isSelected
-        viewModel.pressFilter(type = "Charm", isSelected = btnSpellsCharm.isSelected)
+//        viewModel.pressFilter(type = "Charm", isSelected = btnSpellsCharm.isSelected)
+        viewModel.pressFilter(type = "human", isSelected = btnSpellsCharm.isSelected)
       }
       btnSpellsSpell.setOnClickListener {
         btnSpellsSpell.isSelected = !btnSpellsSpell.isSelected
@@ -59,6 +61,18 @@ class SpellsFragment : Fragment() {
     }
   }
 
+  private fun setupLoading() {
+    viewModel.isLoading.observe(viewLifecycleOwner, {
+      binding.apply {
+        txtSpellLoading.visibility = if (it) {
+          View.VISIBLE
+        } else {
+          View.GONE
+        }
+      }
+    })
+  }
+
   private fun configureRecycler() {
     binding.apply {
       recyclerSpells.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -68,7 +82,9 @@ class SpellsFragment : Fragment() {
 
   private fun configureDataDisplay() {
     viewModel.spellsDisplay.observe(viewLifecycleOwner, { data ->
-      mAdapter.setData(newData = data)
+      if (data.isNotEmpty()) {
+        mAdapter.setData(newData = data)
+      }
     })
   }
 

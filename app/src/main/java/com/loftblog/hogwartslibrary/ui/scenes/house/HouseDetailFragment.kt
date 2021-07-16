@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.loftblog.hogwartslibrary.R
 import com.loftblog.hogwartslibrary.databinding.FragmentHouseDetailBinding
 import com.loftblog.hogwartslibrary.helpers.Keys
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class HouseDetailFragment : Fragment() {
 
   private lateinit var viewModel: HouseDetailViewModel
@@ -32,7 +36,33 @@ class HouseDetailFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     configureLayout()
-    viewModel.fetchData(houses = arguments?.get(Keys.Faculty.value) as? Houses)
+    setupLoading()
+
+    viewModel.fetchData(house = arguments?.get(Keys.Faculty.value) as? Houses)
+
+    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        view.findNavController().navigate(R.id.action_houseDetailFragment_to_navigation_dashboard)
+      }
+    })
+  }
+
+  private fun setupLoading(){
+    viewModel.isLoading.observe(viewLifecycleOwner, {
+      binding.apply {
+        txtHouseDetailsLoading.visibility = if (it) {
+          View.VISIBLE
+        } else {
+          View.GONE
+        }
+
+        linerLayoutHouseDetail.visibility = if (it) {
+          View.GONE
+        } else {
+          View.VISIBLE
+        }
+      }
+    })
   }
 
   private fun configureLayout() {

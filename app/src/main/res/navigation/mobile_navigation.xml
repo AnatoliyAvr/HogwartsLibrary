@@ -35,5 +35,8 @@
       android:name="Houses"
       app:argType="com.loftblog.hogwartslibrary.ui.scenes.house.Houses"
       android:defaultValue="Gryffindor" />
+    <action
+      android:id="@+id/action_houseDetailFragment_to_navigation_dashboard"
+      app:destination="@id/navigation_dashboard" />
   </fragment>
 </navigation>

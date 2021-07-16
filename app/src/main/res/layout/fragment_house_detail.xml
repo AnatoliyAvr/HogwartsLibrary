@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context=".ui.scenes.house.HouseDetailFragment">
 
-  <ImageView
-    android:id="@+id/imgHouseDetail"
+  <LinearLayout
+    android:id="@+id/linerLayoutHouseDetail"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:scaleType="centerCrop"
-    android:src="@drawable/img_hufflepuff" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+      android:id="@+id/imgHouseDetail"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/img_hufflepuff" />
+
+    <TextView
+      android:id="@+id/txtHouseName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:fontFamily="sans-serif-medium"
+      android:text="Hufflepuff"
+      android:textColor="@color/main_header_color"
+      android:textSize="@dimen/main_header_size" />
+
+    <TextView
+      android:id="@+id/txtHouseLeader"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="2dp"
+      android:text="@string/house_detail_leader"
+      android:textColor="@color/main_subheader_color"
+      android:textSize="@dimen/main_subheader_size" />
+
+    <TextView
+      android:id="@+id/txtHouseOwner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/house_detail_owner"
+      android:textColor="@color/main_subheader_color"
+      android:textSize="@dimen/main_subheader_size" />
+
+    <TextView
+      android:id="@+id/txtHouseGhost"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="4dp"
+      android:text="@string/house_detail_ghost"
+      android:textColor="@color/main_subheader_color"
+      android:textSize="@dimen/main_subheader_size" />
+
+  </LinearLayout>
 
   <TextView
-    android:id="@+id/txtHouseName"
+    android:id="@+id/txtHouseDetailsLoading"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:fontFamily="sans-serif-medium"
-    android:text="Hufflepuff"
-    android:textColor="@color/main_header_color"
-    android:textSize="@dimen/main_header_size" />
+    android:layout_gravity="center"
+    android:text="@string/loading"
+    android:textColor="@color/primary_text_color"
+    android:textSize="24sp" />
 
-  <TextView
-    android:id="@+id/txtHouseLeader"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="2dp"
-    android:text="@string/house_detail_leader"
-    android:textColor="@color/main_subheader_color"
-    android:textSize="@dimen/main_subheader_size" />
-
-  <TextView
-    android:id="@+id/txtHouseOwner"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:text="@string/house_detail_owner"
-    android:textColor="@color/main_subheader_color"
-    android:textSize="@dimen/main_subheader_size" />
-
-  <TextView
-    android:id="@+id/txtHouseGhost"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="4dp"
-    android:text="@string/house_detail_ghost"
-    android:textColor="@color/main_subheader_color"
-    android:textSize="@dimen/main_subheader_size" />
-
-</LinearLayout>
+</FrameLayout>

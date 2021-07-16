@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.loftblog.hogwartslibrary.databinding.FragmentStudentsBinding
 import com.loftblog.hogwartslibrary.ui.scenes.students.adapter.StudentsAdapter
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class StudentsFragment : Fragment() {
 
   private lateinit var studentsViewModel: StudentsViewModel
@@ -53,10 +55,8 @@ class StudentsFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
           mAdapter.filter(query = s.toString())
         }
-
       })
     }
-
     studentsViewModel.fetchStudents()
   }
 

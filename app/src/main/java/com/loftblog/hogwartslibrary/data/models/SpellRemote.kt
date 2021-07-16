@@ -3,7 +3,7 @@ package com.loftblog.hogwartslibrary.data.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HouseRemote(
+data class SpellRemote(
   val actor: String = "",
   val alive: Boolean,
   val ancestry: String = "",

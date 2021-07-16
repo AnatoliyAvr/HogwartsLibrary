@@ -10,7 +10,9 @@ import com.loftblog.hogwartslibrary.ui.scenes.students.adapter.mapToUI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class StudentsViewModel : ViewModel() {
 
   private val studentsRepository = StudentsRepositoryImpl()
@@ -30,7 +32,9 @@ class StudentsViewModel : ViewModel() {
       withContext(Dispatchers.Default) {
         val students = studentsRepository.fetchStudents()
         _isLoading.postValue(false)
-        _students.postValue(students.map { it.mapToUI() })
+        students?.let { values ->
+          _students.postValue(values.map { it.mapToUI() })
+        }
       }
     }
   }

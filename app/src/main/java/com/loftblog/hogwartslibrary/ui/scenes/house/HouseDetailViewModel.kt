@@ -3,9 +3,19 @@ package com.loftblog.hogwartslibrary.ui.scenes.house
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.loftblog.hogwartslibrary.R
+import com.loftblog.hogwartslibrary.domain.repositories.HouseRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class HouseDetailViewModel : ViewModel() {
+
+  private val houseRepository = HouseRepositoryImpl()
 
   private val _ghost: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
   private val _founder: MutableLiveData<String> = MutableLiveData<String>().apply { value = "" }
@@ -19,21 +29,29 @@ class HouseDetailViewModel : ViewModel() {
   val houseName: LiveData<String> = _houseName
   val houseImage: LiveData<Int> = _houseImage
 
-  fun fetchData(houses: Houses?) {
-    when (houses) {
-      Houses.Gryffindor -> {
-        _ghost.postValue("Nick")
-        _founder.postValue("Godrik Gryffindor")
-        _leader.postValue("McGonagal")
-        _houseName.postValue("Gryffindor")
-        _houseImage.postValue(R.drawable.img_gryffindor)
-      }
-      else -> {
-        _ghost.postValue("Alex")
-        _founder.postValue("Hufflepuff")
-        _leader.postValue("Garden Woman")
-        _houseName.postValue("Hufflepuff")
-        _houseImage.postValue(R.drawable.img_hufflepuff)
+  private val _isLoading = MutableLiveData<Boolean>().apply { value = false }
+  val isLoading: LiveData<Boolean> = _isLoading
+
+  fun fetchData(house: Houses?) {
+
+    viewModelScope.launch {
+      _isLoading.postValue(true)
+      withContext(Dispatchers.Default) {
+        house?.let {
+          val details = houseRepository.getHouseDetails(house = house)
+          _ghost.postValue(details?.ghost.orEmpty())
+          _founder.postValue(details?.founder.orEmpty())
+          _leader.postValue(details?.leader.orEmpty())
+          _houseName.postValue(details?.name.orEmpty())
+          when (house) {
+            Houses.Gryffindor -> _houseImage.postValue(R.drawable.img_gryffindor)
+            Houses.Slytherin -> _houseImage.postValue(R.drawable.img_slytherin)
+            Houses.Ravenclaw -> _houseImage.postValue(R.drawable.img_ravenclaw)
+            Houses.Hufflepuff -> _houseImage.postValue(R.drawable.img_hufflepuff)
+          }
+          delay(500)
+          _isLoading.postValue(false)
+        }
       }
     }
   }
